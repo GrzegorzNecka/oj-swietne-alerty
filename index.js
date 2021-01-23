@@ -27,6 +27,29 @@ class simpleAlert {
     return this.createAlert("Error", "Coś totalnie poszło nie tak.", "red-600");
   }
 
+  removeAlert(alert) {
+    alert.addEventListener("click", e => {
+      this.container.removeChild(alert);
+    });
+    setTimeout(() => {
+      if (this.container.contains(alert)) {
+        this.container.removeChild(alert);
+      }
+    }, 3000);
+
+    
+  }
+
+  chceckAlertCounter() {
+    const container = document.querySelector(".-m-2.text-center");
+    return container.childElementCount;
+  }
+
+  displayAlert(alert) {
+    this.container.appendChild(alert);
+    this.removeAlert(alert);
+  }
+
   createAlert(title, message, color) {
     const alert = document.createElement("div");
     alert.classList.add("p-2");
@@ -37,32 +60,8 @@ class simpleAlert {
       </div>
     `;
 
-    return this.displayAlert(alert);
-  }
-
-  removeAlert(alert) {
-    alert.addEventListener("click", e => {
-      this.container.removeChild(alert);
-    });
-
-    setTimeout(() => {
-      if (this.container.contains(alert)) {
-        this.container.removeChild(alert);
-      }
-    }, 3000);
-  }
-
-  alertCounter() {
-    const container = document.querySelector(".-m-2.text-center");
-    return container.childElementCount;
-  }
-
-  displayAlert(alert) {
-    if (this.alertCounter() < 3) {
-      this.container.appendChild(alert);
-      this.removeAlert(alert);
-      
-    } else if (this.alertCounter() >= 3) {
+    if (this.chceckAlertCounter() < 3) {
+      return this.displayAlert(alert);
     }
   }
 }
