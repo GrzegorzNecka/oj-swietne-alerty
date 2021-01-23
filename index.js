@@ -33,20 +33,24 @@ class simpleAlert {
     return container.childElementCount;
   }
 
-  addQueuedAlerts() {
+  appendQueuedAlerts() {
     if (this.state.length) {
-      this.state.forEach(alert => {
-        this.displayAlert(alert);
-        this.state.splice(alert, 1);
+      this.state.forEach(elem => {
+        if (this.chceckAlertCounter() <= 2) {
+          this.displayAlert(elem);
+          this.state.splice(elem, 1);
+        }
       });
-    }
-  }
+    }}
 
   removingFn(alert) {
     if (this.container.contains(alert)) {
       this.container.removeChild(alert);
     }
-    this.addQueuedAlerts();
+    this.appendQueuedAlerts();
+
+
+    console.log("remove state", this.state);
   }
 
   createAlert(title, message, color) {
@@ -59,11 +63,11 @@ class simpleAlert {
       </div>
     `;
 
-    return this.displayAlert(alert);
+    this.displayAlert(alert);
   }
 
   displayAlert(alert) {
-    if (this.chceckAlertCounter() < 3) {
+    if (this.chceckAlertCounter() <= 2) {
       this.container.appendChild(alert);
       this.removeAlert(alert);
     } else {
@@ -73,7 +77,7 @@ class simpleAlert {
 
   removeAlert(alert) {
     alert.addEventListener("click", () => this.removingFn(alert));
-    setTimeout(() => this.removingFn(alert), 10000);
+    setTimeout(() => this.removingFn(alert), 4000);
   }
 }
 
@@ -84,5 +88,6 @@ alert.success;
 alert.error;
 alert.success;
 alert.warning;
+alert.success;
 alert.error;
 alert.success;
