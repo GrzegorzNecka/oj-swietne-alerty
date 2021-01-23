@@ -54,7 +54,9 @@ class simpleAlert {
 
   removeAlert(alert) {
     alert.addEventListener("click", e => {
-      this.container.removeChild(alert);
+      if (this.container.contains(alert)) {
+        this.container.removeChild(alert);
+      }
     });
     setTimeout(() => {
       if (this.container.contains(alert)) {
