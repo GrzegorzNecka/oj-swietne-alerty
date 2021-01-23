@@ -4,9 +4,7 @@ import "./style.css";
 class simpleAlert {
   constructor(type) {
     this.type = type;
-    // this.error = error;
-    // this.warning = warning;
-    // this.success = success;
+    this.container = document.querySelector(".-m-2.text-center");
   }
 
   get success() {
@@ -42,18 +40,30 @@ class simpleAlert {
     return this.displayAlert(alert);
   }
 
-  displayAlert(alert) {
+  removeAlert(alert) {
+    alert.addEventListener("click", e => {
+      this.container.removeChild(alert);
+    });
 
+    setTimeout(() => {
+      if (this.container.contains(alert)) {
+        this.container.removeChild(alert);
+      }
+    }, 3000);
+  }
+
+  alertCounter() {
     const container = document.querySelector(".-m-2.text-center");
+    return container.childElementCount;
+  }
 
-    if (container.childElementCount < 3) {
-      container.appendChild(alert);
-      setTimeout(()=>{
-        container.removeChild(alert);
-      },10000)
+  displayAlert(alert) {
+    if (this.alertCounter() < 3) {
+      this.container.appendChild(alert);
+      this.removeAlert(alert);
+      
+    } else if (this.alertCounter() >= 3) {
     }
-
-    
   }
 }
 
@@ -62,4 +72,7 @@ const alert = new simpleAlert();
 alert.warning;
 alert.success;
 alert.error;
+alert.success;
+alert.warning;
 alert.error;
+alert.success;
