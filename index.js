@@ -5,6 +5,7 @@ class simpleAlert {
   constructor(type) {
     this.type = type;
     this.container = document.querySelector(".-m-2.text-center");
+    this.stack = [];
   }
 
   get success() {
