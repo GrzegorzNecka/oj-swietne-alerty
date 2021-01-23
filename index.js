@@ -33,17 +33,20 @@ class simpleAlert {
     return container.childElementCount;
   }
 
-  removingFn(alert) {
-    if (this.container.contains(alert)) {
-      this.container.removeChild(alert);
-    }
-
+  addQueuedAlerts() {
     if (this.state.length) {
       this.state.forEach(alert => {
         this.displayAlert(alert);
         this.state.splice(alert, 1);
       });
     }
+  }
+
+  removingFn(alert) {
+    if (this.container.contains(alert)) {
+      this.container.removeChild(alert);
+    }
+    this.addQueuedAlerts();
   }
 
   createAlert(title, message, color) {
