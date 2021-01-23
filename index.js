@@ -2,10 +2,9 @@
 import "./style.css";
 
 class simpleAlert {
-  constructor(type) {
-    this.type = type;
+  constructor() {
     this.container = document.querySelector(".-m-2.text-center");
-    this.state = [];
+    this.stack = [];
   }
 
   get success() {
@@ -28,31 +27,6 @@ class simpleAlert {
     return this.createAlert("Error", "Coś totalnie poszło nie tak.", "red-600");
   }
 
-  chceckAlertCounter() {
-    const container = document.querySelector(".-m-2.text-center");
-    return container.childElementCount;
-  }
-
-  appendQueuedAlerts() {
-    if (this.state.length) {
-      this.state.forEach(elem => {
-        if (this.chceckAlertCounter() <= 2) {
-          this.displayAlert(elem);
-          this.state.splice(elem, 1);
-        }
-      });
-    }}
-
-  removingFn(alert) {
-    if (this.container.contains(alert)) {
-      this.container.removeChild(alert);
-    }
-    this.appendQueuedAlerts();
-
-
-    console.log("remove state", this.state);
-  }
-
   createAlert(title, message, color) {
     const alert = document.createElement("div");
     alert.classList.add("p-2");
@@ -62,7 +36,6 @@ class simpleAlert {
         <span class="inline-flex px-2">${message}</span>
       </div>
     `;
-
     this.displayAlert(alert);
   }
 
@@ -71,13 +44,36 @@ class simpleAlert {
       this.container.appendChild(alert);
       this.removeAlert(alert);
     } else {
-      this.state.push(alert);
+      this.stack.push(alert);
     }
+  }
+
+  chceckAlertCounter() {
+    const container = document.querySelector(".-m-2.text-center");
+    return container.childElementCount;
   }
 
   removeAlert(alert) {
     alert.addEventListener("click", () => this.removingFn(alert));
-    setTimeout(() => this.removingFn(alert), 4000);
+    setTimeout(() => this.removingFn(alert), 10000);
+  }
+
+  removingFn(alert) {
+    if (this.container.contains(alert)) {
+      this.container.removeChild(alert);
+    }
+    this.appendQueuedAlerts();
+  }
+
+  appendQueuedAlerts() {
+    if (this.stack.length) {
+      this.stack.forEach(elem => {
+        if (this.chceckAlertCounter() <= 2) {
+          this.displayAlert(elem);
+          this.stack.splice(elem, 1);
+        }
+      });
+    }
   }
 }
 
