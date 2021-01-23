@@ -43,15 +43,17 @@ class simpleAlert {
   }
 
   displayAlert(alert) {
+
     const container = document.querySelector(".-m-2.text-center");
 
-    console.dir(container);
+    if (container.childElementCount < 3) {
+      container.appendChild(alert);
+      setTimeout(()=>{
+        container.removeChild(alert);
+      },10000)
+    }
 
-    Array.from(container).forEach(e => {
-      console.log(e);
-    });
-
-    container.appendChild(alert);
+    
   }
 }
 
@@ -59,3 +61,5 @@ const alert = new simpleAlert();
 
 alert.warning;
 alert.success;
+alert.error;
+alert.error;
