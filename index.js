@@ -5,7 +5,7 @@ class simpleAlert {
   constructor(type) {
     this.type = type;
     this.container = document.querySelector(".-m-2.text-center");
-    this.stack = [];
+    this.state = [];
   }
 
   get success() {
@@ -33,6 +33,19 @@ class simpleAlert {
     return container.childElementCount;
   }
 
+  removingFn(alert) {
+    if (this.container.contains(alert)) {
+      this.container.removeChild(alert);
+    }
+
+    if (this.state.length) {
+      this.state.forEach(alert => {
+        this.displayAlert(alert);
+        this.state.splice(alert, 1);
+      });
+    }
+  }
+
   createAlert(title, message, color) {
     const alert = document.createElement("div");
     alert.classList.add("p-2");
@@ -50,20 +63,14 @@ class simpleAlert {
     if (this.chceckAlertCounter() < 3) {
       this.container.appendChild(alert);
       this.removeAlert(alert);
+    } else {
+      this.state.push(alert);
     }
   }
 
   removeAlert(alert) {
-    alert.addEventListener("click", e => {
-      if (this.container.contains(alert)) {
-        this.container.removeChild(alert);
-      }
-    });
-    setTimeout(() => {
-      if (this.container.contains(alert)) {
-        this.container.removeChild(alert);
-      }
-    }, 3000);
+    alert.addEventListener("click", () => this.removingFn(alert));
+    setTimeout(() => this.removingFn(alert), 10000);
   }
 }
 
